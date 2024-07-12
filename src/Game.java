@@ -8,12 +8,15 @@ import java.util.*;
 
 public class Game {
 
-    Board board = new Board();
-    Color turn = Color.WHITE;
+    Board board;
+    Color turn;
     Map<String, List<String>> games = new HashMap<String, List<String>>();
-    List<String> moves = new ArrayList<>();
-    boolean end_game = false;
+    List<String> moves;
+    boolean end_game;
 
+    public void setMoves(List<String> moves) {
+        this.moves = moves;
+    }
 
     public static void main(String[] args) throws InvalidMoveException {
         new Game().play();
@@ -21,13 +24,20 @@ public class Game {
 
 
     public void play() throws InvalidMoveException {
+        List<String> moves = new ArrayList<>();
+        setMoves(moves);
+        board = new Board();
+        setTurn(Color.WHITE);
+        end_game = false;
+
         board.init();
         System.out.println(board.toString());
         Scanner myObj = new Scanner(System.in);
-        System.out.print(turn + " plays "  + "enter move :");
-        String move = myObj.nextLine();
+
 
         while (end_game == false){
+            System.out.print(turn + " plays "  + "enter move :");
+            String move = myObj.nextLine();
             if (move.charAt(0) == ':'){
                 if(move.charAt(1) == 'h'){
                     printHelp();
@@ -48,8 +58,11 @@ public class Game {
                 handleMove(move);
                 System.out.println(board.toString());
             }
-            System.out.print(turn + " plays "  + "enter move :");
-            move = myObj.nextLine();
+        }
+        System.out.print("Want to play again ? y-yes n-no ");
+        String again = myObj.nextLine();
+        if (again.charAt(0) == 'y'){
+            this.play();
         }
     }
 
@@ -68,16 +81,19 @@ public class Game {
                         piece.moveTo(location_to);
                         setTurn(isTurn().nextColor());
                         moves.add(moveString);
+                        if (board.isEnd()){
+                            end_game = true;
+                        }
                     } catch (InvalidMoveException e){
                         System.out.println("Please enter a valid move !" + '\n');
                     }
                 }
                 else {
-                    System.out.println("Please enter a valid move!");
+                    System.out.println("Please enter a valid move !" + '\n');
                 }
             }
             else {
-                System.out.println("Please enter a valid move!");
+                System.out.println("Please enter a valid move !" + '\n');
             }
         }
     }
@@ -86,7 +102,6 @@ public class Game {
         Scanner myObj = new Scanner(System.in);
         System.out.print("What would you like to name your game ? ");
         String name = myObj.nextLine();
-//        game[0] = board;
         List<String> moves_save = new ArrayList<>();
         for (int i = 0; i < moves.size(); i++){
             moves_save.add(moves.get(i));

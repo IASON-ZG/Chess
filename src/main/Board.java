@@ -4,6 +4,8 @@ import pieces.*;
 
 public class Board {
     Piece[][] table;
+    private boolean end = false;
+
 
     public Board(){
         this.table = new Piece[8][8];
@@ -82,7 +84,12 @@ public class Board {
 
     public void movePieceCapturing(Location from,Location to)  {
         Piece piece = table[from.getRow()][from.getCol()];
+        Piece piece_captured = table[to.getRow()][to.getCol()];
         if(piece != null){
+            if (piece_captured.getClass().equals(King.class)){
+                setEnd(true);
+                System.out.println("Game is over " + piece.getColor() + " Won!");
+            }
             table[from.getRow()][from.getCol()] = null;
             table[to.getRow()][to.getCol()] = piece;
         }
@@ -94,14 +101,14 @@ public class Board {
         boolean clear_path = true;
         int diff = Math.abs(from.getCol() - to.getCol());
         if ((from.getCol() < to.getCol()) && (from.getRow() < to.getRow())){
-            for (int i = 1; i < diff; i++){
+            for (int i = 1; i < diff-1; i++){
                 if (table[from.getRow()+i][from.getCol()+i] != null) {
                     clear_path = false;
                 }
             }
         }
         else {
-            for (int i = 1; i < diff; i++){
+            for (int i = 1; i < diff-1; i++){
                 if (table[from.getRow()-i][from.getCol()-i] != null){
                     clear_path = false;
                 }
@@ -114,15 +121,16 @@ public class Board {
         boolean clear_path = true;
         int diff = Math.abs(from.getCol() - to.getCol());
 
+
         if ((from.getCol() < to.getCol()) && (from.getRow() > to.getRow())){
-            for (int i = 1; i < diff; i++){
-                if (table[from.getRow()+i][from.getCol()-i] != null){
+            for (int i = 1; i < diff-1; i++){
+                if (table[from.getRow()-i][from.getCol()+i] != null){
                     clear_path = false;
                 }
             }
         } else {
-            for (int i = 1; i < diff; i++){
-                if (table[from.getRow()-i][from.getCol()+i] != null){
+            for (int i = 1; i < diff-1; i++){
+                if (table[from.getRow()+i][from.getCol()-i] != null){
                     clear_path = false;
                 }
             }
@@ -136,13 +144,13 @@ public class Board {
         int diff = Math.abs(to.getRow()-from.getRow());
 
         if(from.getRow() < to.getRow()){
-            for (int i = 1; i < diff; i++){
+            for (int i = 1; i < diff-1; i++){
                 if (table[from.getRow()+i][from.getCol()] != null){
                     clear_path = false;
                 }
             }
         } else {
-            for (int i = 1; i < diff; i++){
+            for (int i = 1; i < diff-1; i++){
                 if (table[from.getRow()-i][from.getCol()] != null){
                     clear_path = false;
                 }
@@ -157,13 +165,13 @@ public class Board {
         int diff = Math.abs(to.getCol()-from.getCol());
 
         if (from.getCol()< to.getCol()){
-            for (int i = 1; i < diff; i++){
+            for (int i = 1; i < diff-1; i++){
                 if (table[from.getRow()][from.getCol()+i] != null){
                     clear_path = false;
                 }
             }
         } else {
-            for (int i = 1; i < diff; i++){
+            for (int i = 1; i < diff-1; i++){
                 if (table[from.getRow()][from.getCol() - i] != null){
                     clear_path = false;
                 }
@@ -194,5 +202,14 @@ public class Board {
 
     public Piece[][] getTable() {
         return table;
+    }
+
+
+    public boolean isEnd() {
+        return end;
+    }
+
+    public void setEnd(boolean end) {
+        this.end = end;
     }
 }
