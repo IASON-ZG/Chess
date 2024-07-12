@@ -31,6 +31,9 @@ public class Queen extends Piece {
                             }
                         }
                     }
+                    else {
+                        throw new InvalidMoveException();
+                    }
                 }
                 else {
                     if (getBoard().freeAntidiagonalPath(getLocation(),newLoc)){
@@ -47,8 +50,12 @@ public class Queen extends Piece {
                             }
                         }
                     }
+                    else {
+                        throw new InvalidMoveException();
+                    }
                 }
-            } else {
+            }
+            else {
                 if (newLoc.getRow() == getLocation().getRow()) {
                     if (getBoard().freeHorizontalPath(getLocation(), newLoc)) {
                         if (getBoard().getTable()[newLoc.getRow()][newLoc.getCol()] == null) {

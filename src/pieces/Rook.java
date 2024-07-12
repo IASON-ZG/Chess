@@ -13,7 +13,7 @@ public class Rook extends Piece{
     @Override
     public void moveTo(Location newLoc) throws InvalidMoveException {
         if ( newLoc.getRow() >= 0 && newLoc.getRow() <= 7 && newLoc.getCol()>= 0 && newLoc.getCol() <= 7) {
-            if ( newLoc.getCol() == getLocation().getCol()){
+            if (newLoc.getCol() == getLocation().getCol()){
                 if (getBoard().freeVerticalPath(getLocation(),newLoc)){
                     if (getBoard().getTable()[newLoc.getRow()][newLoc.getCol()] == null){
                         getBoard().movePiece(getLocation(),newLoc);
@@ -29,6 +29,9 @@ public class Rook extends Piece{
                             setLocation(newLoc);
                         }
                     }
+                }
+                else {
+                    throw new InvalidMoveException();
                 }
             }
             else if ( newLoc.getRow() == getLocation().getRow()){
@@ -47,6 +50,9 @@ public class Rook extends Piece{
                             setLocation(newLoc);
                         }
                     }
+                }
+                else {
+                    throw new InvalidMoveException();
                 }
             }
             else {
