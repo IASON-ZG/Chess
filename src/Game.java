@@ -2,7 +2,7 @@ import main.Board;
 import main.Color;
 import main.InvalidMoveException;
 import main.Location;
-import pieces.Piece;
+import pieces.*;
 
 import java.util.*;
 
@@ -55,7 +55,15 @@ public class Game {
                 System.out.println(board.toString());
             }
             else {
-                handleMove(move);
+                if (move.length() != 4){
+                    System.out.println('\n' +"Wrong syntax in the move!" + '\n');
+                }
+                else if (move.charAt(0) > 'h' || move.charAt(1) > '8' || move.charAt(1) < '1' || move.charAt(2) > 'h' || move.charAt(3) > '8' || move.charAt(3) < '1'){
+                    System.out.println('\n' +"Move outside of range!" + '\n');
+
+                } else {
+                    handleMove(move);
+                }
                 System.out.println(board.toString());
             }
         }
@@ -85,15 +93,32 @@ public class Game {
                             end_game = true;
                         }
                     } catch (InvalidMoveException e){
-                        System.out.println("Please enter a valid move !" + '\n');
+                        if (piece.getClass().equals(Pawn.class)){
+                            System.out.println('\n' +"Pawn only moves vertical and can move 2 positions forward only the first time!" + '\n');
+                        }
+                        else if (piece.getClass().equals(Bishop.class)){
+                            System.out.println('\n' +"Bishop only moves horizontally and not on top of other pieces!" + '\n');
+                        }
+                        else if (piece.getClass().equals(King.class)){
+                            System.out.println('\n' +"King only moves one position and not on top of other pieces!" + '\n');
+                        }
+                        else if (piece.getClass().equals(Knight.class)){
+                            System.out.println('\n' +"Knight can move 2 paces horizontally and 1 vertically or the other way around!" + '\n');
+                        }
+                        else if (piece.getClass().equals(Queen.class)){
+                            System.out.println('\n' +"Queen cannot move on top of other pieces" + '\n');
+                        }
+                        else if (piece.getClass().equals(Rook.class)){
+                            System.out.println('\n' +"Rook can move either horizontally and vertically as many positions but not on top of other pieces!" + '\n');
+                        }
                     }
                 }
                 else {
-                    System.out.println("Please enter a valid move !" + '\n');
+                    System.out.println('\n' + "Wrong color piece moved !" + '\n');
                 }
             }
             else {
-                System.out.println("Please enter a valid move !" + '\n');
+                System.out.println('\n' +"There is no piece to move!" + '\n');
             }
         }
     }
